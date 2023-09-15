@@ -28,7 +28,7 @@
       </lay-row>
     </lay-container>
     <lay-layer v-model="visibleBaseInfo" :shade="false" :btn="action" :title="operationType" anim="1" :area="['60%','80%']">
-      <lay-row space="10">
+      <lay-row space="5">
         <lay-col md="24">
           <div style="padding: 20px;">
             <lay-form :model="formData" ref="layFormRef" v-for="(item, index) in formData" :key="index" :pane="true">
