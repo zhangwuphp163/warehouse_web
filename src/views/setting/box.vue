@@ -19,9 +19,16 @@
                 <lay-button size="sm" type="primary" @click="createBox">{{ t('create') }}</lay-button>
               </template>
 
-              <template v-slot:operator="{ data }">
-                <lay-button size="xs" type="primary" @click="editRaw(data)">{{ t('edit') }}</lay-button>
+              <template v-slot:operator="{ row }">
+                <lay-button size="xs" type="primary" @click="editRaw(row)">{{ t('edit') }}</lay-button>
               </template>
+
+              <template v-slot:is_active="{ row }">
+                <lay-switch v-model="row.is_active" :disabled="true"></lay-switch>
+                <!-- <div v-if="row.is_active == 1"><lay-switch v-model="row.is_active"></lay-switch></div>
+                <div v-else="row.is_active == 1"><lay-switch v-model="row.is_active"></lay-switch></div> -->
+              </template>
+
               <template v-slot:footer>
                 <lay-layer v-model="visible" :shade="false" :btn="action" :title="operationType" anim="1" :area="['450px','500px']">
                   <div style="padding: 20px;">
@@ -36,7 +43,7 @@
                           <lay-select v-model="formData.warehouse_id" :items="warehouseDataSource" :options="warehouseDataSource" @change="setSelectValue($event,'warehouse')" :allow-clear="true"></lay-select>
                       </lay-form-item>
                       <lay-form-item :label="t('client')">
-                        <lay-select v-model="formData.client_id" :items="warehouseDataSource" :options="warehouseDataSource" :show-search="true" @change="setSelectValue($event,'client')"></lay-select>
+                        <lay-select v-model="formData.client_id" :items="clientDataSource" :options="clientDataSource" @change="setSelectValue($event,'client')" :allow-clear="true"></lay-select>
                       </lay-form-item> 
                       <lay-form-item :label="t('is_active')">
                         <lay-switch v-model="formData.is_active" :onswitch-text="t('enable')"  :unswitch-text="t('disable')"></lay-switch>
@@ -107,7 +114,8 @@
         {
           title: t('is_active'),
           key: 'is_active',
-          align:"center"
+          align:"center",
+          customSlot: 'is_active',
         },
         {
           title: t('length'),
@@ -156,8 +164,19 @@
         is_active:true
       }
   
-      const formData = ref(Object.assign({},baseFormData))
-  
+      const formData: any = ref({
+        id:'',
+        code: '',
+        name: '',
+        client_id: '',
+        warehouse_id:'',
+        weight:0.000,
+        length:0.00,
+        width:0.00,
+        height:0.00,
+        is_active:true
+      })
+
       function createBox(){
         formData.value = Object.assign({},baseFormData)
         operation.value = "create"
@@ -166,8 +185,13 @@
       }
       
       const editRaw = function(data: any){
-        formData.value = data
-        formData.value.is_active = data.is_active?true:false
+        for (let key in formData.value) {
+          if (data.hasOwnProperty(key)) {
+              formData.value[key] = data[key];
+          }
+        }
+        formData.value['is_active'] = formData.value['is_active']?true:false;
+        //formData.value = data
         operation.value = "edit"
         operationType.value = t('edit')
         visible.value = true
@@ -175,11 +199,11 @@
       }
 
       function setSelectValue(value:any,type: string){
-        if(type == 'warehouse'){
-          formData.value.warehouse_id = ref(value)
-        }else if(type == 'client'){
-          formData.value.client_id = ref(value)
-        }
+        // if(type == 'warehouse'){
+        //   formData.warehouse_id = ref(value)
+        // }else if(type == 'client'){
+        //   formData.client_id = ref(value)
+        // }
       }
   
       const change = function ({ current, limit }: any) {
@@ -208,18 +232,18 @@
       {
           text: t('confirm'),
           callback: () => {
-            if(formData.value.warehouse_id == ''){
-              layer.msg('仓库必须的',{time:2000,icon:2})
-              return false
-            }
-            if(formData.value.code == ''){
-              layer.msg('箱子代码的',{time:2000,icon:2})
-              return false
-            }
-            if(formData.value.name == ''){
-              layer.msg('箱子名称必须的',{time:2000,icon:2})
-              return false
-            }
+            // if(formData.value.warehouse_id == ''){
+            //   layer.msg('仓库必须的',{time:2000,icon:2})
+            //   return false
+            // }
+            // if(formData.value.code == ''){
+            //   layer.msg('箱子代码的',{time:2000,icon:2})
+            //   return false
+            // }
+            // if(formData.value.name == ''){
+            //   layer.msg('箱子名称必须的',{time:2000,icon:2})
+            //   return false
+            // }
             let loadId = layer.load(0)
             createOrUpdate('box',formData.value).then(({code,msg}) => {
               if(code == 200){
@@ -268,6 +292,9 @@
         this.toSearch()
         getSelectList({ type:"warehouse" }).then(({data,code})=>{
           this.warehouseDataSource = data
+        })
+        getSelectList({ type:"client" }).then(({data,code})=>{
+          this.clientDataSource = data
         })
     }
   }

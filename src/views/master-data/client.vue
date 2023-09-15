@@ -20,26 +20,34 @@
                 <lay-button size="xs" type="primary" @click="editRaw(data)">{{ t('edit') }}</lay-button>
               </template>
               <template v-slot:footer>
-                <lay-layer v-model="visible" :shade="false" :btn="action" :title="operationType" anim="1" :area="['800px','600px']" >
-                  <div style="padding: 20px;">
-                    <lay-form :model="formData" ref="layFormRef" v-for="(item, index) in formData" :key="index" :pane="true">
-                      <lay-form-item :label="t(index)" :label-width="180">
-                        <lay-input  :name="index"></lay-input>
-                      </lay-form-item>
-                    </lay-form>
-                    <!-- <lay-form :model="formData" :pane="true">
-                      <lay-form-item :label="formData.code" :label-width="180">
-                        <lay-input  v-model="formData.code"></lay-input>
-                      </lay-form-item>
-                    </lay-form> -->
-                  </div>
-                </lay-layer>
+                
               </template>
             </lay-table>
           </lay-card>
         </lay-col>
       </lay-row>
     </lay-container>
+    <lay-layer v-model="visibleBaseInfo" :shade="false" :btn="action" :title="operationType" anim="1" :area="['60%','80%']">
+      <lay-row space="10">
+        <lay-col md="24">
+          <div style="padding: 20px;">
+            <lay-form :model="formData" ref="layFormRef" v-for="(item, index) in formData" :key="index" :pane="true">
+              <div v-if="index == 'id' && item == ''"></div>
+              <div v-else-if="index == 'id' && item != ''">
+                <lay-form-item :label="t(index)" :label-width="180">
+                  <lay-input  v-model="formData[index]" :disabled="true"></lay-input>
+                </lay-form-item>
+              </div>
+              <div v-else>
+                <lay-form-item :label="t(index)" :label-width="180">
+                  <lay-input  v-model="formData[index]"></lay-input>
+                </lay-form-item>
+              </div>
+            </lay-form>
+          </div>
+        </lay-col>
+      </lay-row>
+    </lay-layer>
   </template>
   
   <script lang="ts">
@@ -52,11 +60,11 @@
 
     setup() {
       const { t } = useI18n()
-      const visible = ref(false)
+      const visibleBaseInfo = ref(false)
       const page = {limit:10,current:1,total:0,showCount:true,showRefresh:true}
       const dataSource = ref([])
       const loading = ref(true)
-
+      const operationType = ref(t('create'))
       const baseFormData = {
         id:"",
         code:"",
@@ -197,7 +205,7 @@
       const formData = ref({})
       function createBox(){
         formData.value = Object.assign({},baseFormData)
-        visible.value = true
+        visibleBaseInfo.value = true
       }
       
       function toSearch(){
@@ -212,48 +220,44 @@
       }
       
       const editRaw = function(data: any){
-        visible.value = true
-        this.formData = data 
+        visibleBaseInfo.value = true
+        for(let key in baseFormData){
+          this.formData[key] = data[key]
+        }
+        //this.formData = data
+        this.operationType = ref(t('edit'))
       }
       const layFormRef = ref()
       const action = ref([
       {
           text: t('confirm'),
           callback: () => {
-            this.layFormRef.value.validate(
-          (isValidate: boolean, model: any, errors: any) => {
-            console.log(model)
-          }
-      )
-            // let loadId = layer.load(0)
-            // createOrUpdate('warehouse',model).then(({code,msg}) => {
-            
-            //   if(code == 200){
-            //     layer.msg(msg,{ icon: 1 })
-            //     visible.value = false
-            //     toSearch()
-            //   }else{
-            //     layer.msg(msg,{ icon: 2 })
-            //   }
-            // }).finally(() => {
-            //   layer.close(loadId)
-            // })
+            let loadId = layer.load(0)
+            createOrUpdate('client',formData.value).then(({code,msg}) => {
+              if(code == 200){
+                layer.msg(msg,{ icon: 1 })
+                visibleBaseInfo.value = false
+                toSearch()
+              }else{
+                layer.msg(msg,{ icon: 2 })
+              }
+            }).finally(() => {
+              layer.close(loadId)
+            })
           }
         },
         {
             text: t('cancel'),
             callback: () => {
-              visible.value = false
+              visibleBaseInfo.value = false
             }
         }
       ])
 
-      
-
       return {
         loading,
         columns,
-        visible,
+        visibleBaseInfo,
         page,
         dataSource,
         toSearch,
@@ -263,7 +267,7 @@
         t,
         editRaw,
         action,
-        layFormRef
+        operationType
       }
     },
     mounted() {
@@ -275,3 +279,6 @@
     }
   }
   </script>
+<style lang="less">
+.layui-layer-btn{align:center}
+</style>
