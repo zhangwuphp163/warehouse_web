@@ -10,12 +10,12 @@ const menus = [
   {
     id: "/workspace",
     icon: "layui-icon-home",
-    title: "工作空间",
+    title: "workspace",
     children: [
       {
         id: "/workspace/dashboards",
         icon: "layui-icon-find-fill",
-        title: "Dashboards"
+        title: "dashboards"
       }
     ]
   },
@@ -45,19 +45,53 @@ const menus = [
         title: "商品列表",
       },
       {
-        id: "/list/supplier",
-        icon: "layui-icon-list",
-        title: "供应商"
-      },
-      {
         id: "/list/user",
         icon: "layui-icon-list",
         title: "用户列表"
-      },
+      }
+    ]
+  },
+  {
+    id: "/master-data",
+    icon: "layui-icon-auz",
+    title: "数据管理",
+    children: [
       {
-        id: "/list/debug",
+        id: "/master-data/client",
         icon: "layui-icon-list",
-        title: "Debug"
+        title: "客户"
+      }
+    ]
+  },
+  {
+    id: "/setting",
+    icon: "layui-icon-set",
+    title: "设置",
+    children: [
+      {
+        id: "/setting/warehouse",
+        icon: "layui-icon-list",
+        title: "仓库"
+      },
+      // {
+      //   id: "/setting/logistics",
+      //   icon: "layui-icon-list",
+      //   title: "物料渠道"
+      // },
+      {
+        id: "/setting/box",
+        icon: "layui-icon-list",
+        title: "箱子类型"
+      },
+      // {
+      //   id: "/setting/reason",
+      //   icon: "layui-icon-list",
+      //   title: "原因"
+      // },
+      {
+        id: "/setting/country",
+        icon: "layui-icon-list",
+        title: "国家"
       }
     ]
   },

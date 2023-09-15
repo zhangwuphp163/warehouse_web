@@ -38,6 +38,7 @@ declare module '@vue/runtime-core' {
     LayRadioButton: typeof import('@layui/layui-vue')['LayRadioButton']
     LayRadioGroup: typeof import('@layui/layui-vue')['LayRadioGroup']
     LayRow: typeof import('@layui/layui-vue')['LayRow']
+    LaySelect: typeof import('@layui/layui-vue')['LaySelect']
     LaySide: typeof import('@layui/layui-vue')['LaySide']
     LaySubMenu: typeof import('@layui/layui-vue')['LaySubMenu']
     LaySwitch: typeof import('@layui/layui-vue')['LaySwitch']

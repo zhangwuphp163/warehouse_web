@@ -10,12 +10,12 @@
               :loading="loading"
               :ellipsisTooltip="true"
               :even="true"
-              @row="rowClick"
+              :resize="true"
               @change="change"
             >
           
               <template v-slot:toolbar>
-                <lay-button size="sm" type="primary" @click="createMaterial">新增</lay-button>
+                <lay-button size="sm" type="primary" @click="createUser">新增</lay-button>
               </template>
   
               <!-- <template v-slot:barcode="{ data }">
@@ -107,13 +107,13 @@
   
       const model = {
         id:'',
-        barcode: '',
+        username: '',
         name: '',
-        description:'',
+        password:'',
         unit_price:0.00
       }
   
-      function createMaterial(){
+      function createUser(){
         model.username = ''
         model.name = ''
         model.password = ''
@@ -146,7 +146,7 @@
                         if(code == 200){
                           layer.msg(msg,{icon:1})
                           loading.value = true
-                          material(searchForm).then(({data,code,total}) => {
+                          user(searchForm).then(({data,code,total}) => {
                             loading.value = false
                             dataSource.value = data
                             page.total = total
@@ -233,7 +233,7 @@
         loading,
         page,
         dataSource,
-        createMaterial,
+        createUser,
         operation,
         operationType,
         toSearch

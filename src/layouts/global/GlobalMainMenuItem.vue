@@ -4,13 +4,14 @@
       <template #icon>
         <lay-icon :type="menu.icon"></lay-icon>
       </template>
-      <template #title>{{ menu.title }}</template>
+      <template #title>{{ t(menu.title) }}</template>
     </lay-menu-item>
   </template>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useI18n } from '@layui/layui-vue'
 
 export default defineComponent({
   name: "GlobalMainMenuItem",
@@ -18,6 +19,11 @@ export default defineComponent({
     menus: {
       type: Object,
     },
-  },
+  },setup(){
+    const { t } = useI18n()
+    return {
+      t
+    }
+  }
 });
 </script>

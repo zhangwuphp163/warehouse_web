@@ -102,22 +102,10 @@ export default [
         props: true
       },
       {
-        path: '/list/supplier',
-        name: '供应商列表',
-        component: () => import('../../views/list/supplier/index.vue'),
-        meta: { title: '供应商列表', requireAuth: true},
-      },
-      {
         path: '/list/user',
         name: '用户列表',
         component: () => import('../../views/list/admin/index.vue'),
         meta: { title: '用户列表', requireAuth: true},
-      },
-      {
-        path: '/list/debug',
-        name: 'Debug',
-        component: () => import('../../views/list/debug/index.vue'),
-        meta: { title: 'Debug', requireAuth: true},
       },
     ]
   },
@@ -131,6 +119,56 @@ export default [
         name: '入库',
         component: () => import('../../views/operation/inbound.vue'),
         meta: { title: '入库', requireAuth: true, affix: true, closable: false },
+      },
+    ]
+  },
+  {
+    path: '/master-data',
+    component: BaseLayout,
+    meta: { title: '基础数据' },
+    children: [
+      {
+        path: '/master-data/client',
+        name: '客户',
+        component: () => import('../../views/master-data/client.vue'),
+        meta: { title: '客户', requireAuth: true},
+      }
+    ]
+  },
+  {
+    path: '/setting',
+    component: BaseLayout,
+    meta: { title: '基础配置' },
+    children: [
+      {
+        path: '/setting/warehouse',
+        name: '仓库',
+        component: () => import('../../views/setting/warehouse.vue'),
+        meta: { title: '仓库', requireAuth: true},
+      },
+      // {
+      //   path: '/list/logistics',
+      //   name: '物流渠道',
+      //   component: () => import('../../views/list/tables/user.vue'),
+      //   meta: { title: '物流渠道', requireAuth: true},
+      // },
+      {
+        path: '/setting/box',
+        name: '箱子类型',
+        component: () => import('../../views/setting/box.vue'),
+        meta: { title: '箱子类型', requireAuth: true},
+      },
+      // {
+      //   path: '/list/reason',
+      //   name: '原因',
+      //   component: () => import('../../views/list/tables/user.vue'),
+      //   meta: { title: '原因', requireAuth: true},
+      // },
+      {
+        path: '/setting/country',
+        name: '国家',
+        component: () => import('../../views/setting/country.vue'),
+        meta: { title: '国家', requireAuth: true},
       },
     ]
   }

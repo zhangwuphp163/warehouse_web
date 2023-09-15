@@ -38,13 +38,13 @@ import { ref } from 'vue'
 import { layer } from '@layui/layer-vue'
 import { asn,deleteById } from '../../../api/module/asn'
 import router from '../../../router'
-import { useI18n } from "@layui/layui-vue";
-const { t } = useI18n();
+
+
 
 //export default new Vue({\  beforeMount() {\    document.title = this.$t('pageTitle');\  },\});\``
 export default{
   beforeMount() {
-      document.title = t('hello')
+      //document.title = t('hello')
   },
   setup() {
     const columns = [

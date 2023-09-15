@@ -134,12 +134,12 @@
                     <lay-dropdown-menu-item
                       @click="() => (appStore.locale = 'zh_CN')"
                     >
-                      <template #default>中文</template>
+                      <template #default>{{ t('chinese') }}</template>
                     </lay-dropdown-menu-item>
                     <lay-dropdown-menu-item
                       @click="() => (appStore.locale = 'en_US')"
                     >
-                      <template #default>英文</template>
+                      <template #default>{{ t('english') }}</template>
                     </lay-dropdown-menu-item>
                   </lay-dropdown-menu>
                 </template>
@@ -190,7 +190,7 @@
 </template>
 
 <script lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { VueElement, computed, onMounted, ref } from 'vue'
 import { useAppStore } from '../store/app'
 import { useUserStore } from '../store/user'
 import GlobalSetup from './global/GlobalSetup.vue'
@@ -204,6 +204,7 @@ import { useRouter } from 'vue-router'
 import { useMenu } from './composable/useMenu'
 import zh_CN from '../lang/zh_CN'
 import en_US from '../lang/en_US'
+import { useI18n } from '@layui/layui-vue'
 
 export default {
   components: {
@@ -216,6 +217,7 @@ export default {
     GlobalMessageTab
   },
   setup() {
+    const { t } = useI18n()
     const appStore = useAppStore()
     const userInfoStore = useUserStore()
     const fullscreenRef = ref()
@@ -310,7 +312,8 @@ export default {
       toUserInfo,
       toSystemSet,
       changeDropdown,
-      flag
+      flag,
+      t
     }
   }
 }
